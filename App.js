@@ -6,38 +6,53 @@ import { Audio } from "expo-av";
 export default function App() {
   const [isTicking, setIsTicking] = useState(false);
   const [seconds, setSeconds] = useState(0);
-  const [bpm, setBpm] = useState(60)
+  const [bpm, setBpm] = useState(60);
+  const [sound, setSound] = useState()
 
   useEffect(() => {
-    const timer =
-      setTimeout(() => isTicking && setSeconds(seconds + 1), handleTimer()) &&
-      playSound();
-    return () => clearTimeout(timer);
-  }, [seconds, isTicking]);
+    if (isTicking) {
+      (async () => {
+        await playSound();
+        const timer = setTimeout(() => setSeconds(seconds + 1), handleTimer());
+        return () => clearTimeout(timer);
+      })();
+    }
+  }, [isTicking, seconds]);
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound])
 
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync(
       require("./assets/AccessGranted.m4a")
     );
+
+    setSound(sound)
+
     await sound.playAsync();
   }
 
   function handleTimer() {
-    const oneBitPerSecond = 60
-    const oneBitPerOneSecondAndThree = 80
-    const oneBitPerOneSecondAndSix = 100
-    const twoBitPerSecond = 120 
+    const oneBitPerSecond = 60;
+    const oneBitPerOneSecondAndThree = 80;
+    const oneBitPerOneSecondAndSix = 100;
+    const twoBitPerSecond = 120;
 
     if (bpm === oneBitPerSecond) {
-      return 1000
-    } else if (bpm === oneBitPerOneSecondAndThree) { 
-      return 750
+      return 1000;
+    } else if (bpm === oneBitPerOneSecondAndThree) {
+      return 750;
     } else if (bpm === oneBitPerOneSecondAndSix) {
-      return 600
+      return 600;
     } else if (bpm === twoBitPerSecond) {
-      return 500
+      return 500;
     } else {
-      throw new Error('Something went wrong')
+      throw new Error("Something went wrong");
     }
   }
 
@@ -46,8 +61,8 @@ export default function App() {
       <Text>Hello, World!</Text>
       <Text>Number of seconds is {seconds}</Text>
       <Button onPress={() => playSound()} title="Click me" />
-      <Button onPress={() => setIsTicking(false)} title="Pause" />
-      <Button onPress={() => setIsTicking(true)} title="Resume" />
+      <Button onPress={() => setIsTicking(false)} title="Stop" />
+      <Button onPress={() => setIsTicking(true)} title="Start" />
       <View>
         <Text>Choose the number of BPM you want:</Text>
         <Text>This actual number of BPM is: {bpm} BPM</Text>
