@@ -1,22 +1,25 @@
-import { useState, useEffect } from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { Audio } from 'expo-av'
+import { useState, useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View, Button } from "react-native";
+import { Audio } from "expo-av";
 
 export default function App() {
-  const [ isTicking, setIsTicking ] = useState(false)
-  const [ seconds, setSeconds ] = useState(0)
+  const [isTicking, setIsTicking] = useState(false);
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => isTicking && setSeconds(seconds + 1), 1e3) && playSound()
-    return () => clearTimeout(timer)
-  }, [seconds, isTicking])
+    const timer =
+      setTimeout(() => isTicking && setSeconds(seconds + 1), 1e3) &&
+      playSound();
+    return () => clearTimeout(timer);
+  }, [seconds, isTicking]);
 
   async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(require('./assets/AccessGranted.m4a'))
-    await sound.playAsync()
+    const { sound } = await Audio.Sound.createAsync(
+      require("./assets/AccessGranted.m4a")
+    );
+    await sound.playAsync();
   }
-
 
   return (
     <View style={styles.container}>
@@ -33,8 +36,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
