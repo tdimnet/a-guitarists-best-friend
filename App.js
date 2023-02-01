@@ -39,9 +39,9 @@ export default function App() {
 
   function handleTimer() {
     const secondsInMinute = 60;
-    const toNumber = Number(bpm)
+    const toNumber = Number(bpm);
 
-    return (secondsInMinute / toNumber) * 1000
+    return (secondsInMinute / toNumber) * 1000;
   }
 
   return (
@@ -54,7 +54,12 @@ export default function App() {
       <View>
         <Text>Choose the number of BPM you want:</Text>
         <Text>This actual number of BPM is: {bpm} BPM</Text>
-        <TextInput style={styles.input} value={bpm} onChangeText={setBpm} keyboardType="numeric" />
+        <TextInput
+          style={styles.input}
+          value={bpm}
+          onChangeText={setBpm}
+          keyboardType="numeric"
+        />
       </View>
       <View>
         <Button onPress={() => handleTimer()} title="Timer info" />
