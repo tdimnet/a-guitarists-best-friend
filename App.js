@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 import { Audio } from "expo-av";
@@ -12,7 +12,7 @@ export default function App() {
   useEffect(() => {
     if (isTicking) {
       (async () => {
-        let time = seconds === 4 ? 1 : seconds + 1
+        let time = seconds === 4 ? 1 : seconds + 1;
         await playSound();
         const timer = setTimeout(() => setSeconds(time), handleTimer());
         return () => clearTimeout(timer);
@@ -71,19 +71,19 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
+    backgroundColor: "#fff",
+    flex: 1,
     justifyContent: "center",
   },
   input: {
+    borderWidth: 1,
     height: 40,
     margin: 12,
-    borderWidth: 1,
     padding: 10,
   },
   title: {
+    color: "#333",
     fontSize: 24,
-    color: '#333'
-  }
+  },
 });
