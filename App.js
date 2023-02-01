@@ -5,15 +5,16 @@ import { Audio } from "expo-av";
 
 export default function App() {
   const [isTicking, setIsTicking] = useState(false);
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(1);
   const [bpm, setBpm] = useState(60);
   const [sound, setSound] = useState();
 
   useEffect(() => {
     if (isTicking) {
       (async () => {
+        let time = seconds === 4 ? 1 : seconds + 1
         await playSound();
-        const timer = setTimeout(() => setSeconds(seconds + 1), handleTimer());
+        const timer = setTimeout(() => setSeconds(time), handleTimer());
         return () => clearTimeout(timer);
       })();
     }
@@ -46,8 +47,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Hello, World!</Text>
-      <Text>Number of seconds is {seconds}</Text>
+      <Text style={styles.title}>{seconds} / 4</Text>
       <Button onPress={() => playSound()} title="Click me" />
       <Button onPress={() => setIsTicking(false)} title="Stop" />
       <Button onPress={() => setIsTicking(true)} title="Start" />
@@ -82,4 +82,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  title: {
+    fontSize: 24,
+    color: '#333'
+  }
 });
