@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 
+import handleTimer from './src/utils/timer'
+
 const NOTE_VALUES = [
   {
     value: 1,
@@ -36,7 +38,7 @@ export default function App() {
       (async () => {
         let time = seconds === 4 ? 1 : seconds + 1;
         await playSound();
-        const timer = setTimeout(() => setSeconds(time), handleTimer());
+        const timer = setTimeout(() => setSeconds(time), handleTimer(bpm));
         return () => clearTimeout(timer);
       })();
     }
@@ -60,23 +62,16 @@ export default function App() {
     await sound.playAsync();
   }
 
-  function handleTimer() {
-    const secondsInMinute = 60;
-    const toNumber = Number(bpm);
-
-    return (secondsInMinute / toNumber) * 1000;
-  }
-
-  console.log("======");
-  console.log(noteValue);
-  console.log("======");
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{seconds} / 4</Text>
       <Button onPress={() => playSound()} title="Play Sound" />
-      <Button onPress={() => setIsTicking(false)} title="Stop" />
       <Button onPress={() => setIsTicking(true)} title="Start" />
+      <Button onPress={() => {
+        setSeconds(1)
+        setIsTicking(false)
+      }} title="Stop" />
+      <Button onPress={() => handleTimer()} title="Timer helper" />
       <View style={styles.bpmContainer}>
         <Text>Choose the number of BPM you want:</Text>
         <Text>This actual number of BPM is: {bpm} BPM</Text>
