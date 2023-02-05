@@ -11,12 +11,25 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 
+const NOTE_VALUES = [
+  {
+    value: 1,
+    image: require('./assets/noire.png'),
+    name: 'noire'
+  },
+  {
+    value: 0.5,
+    image: require('./assets/croche.png'),
+    name: 'croche'
+  },
+]
+
 export default function App() {
   const [isTicking, setIsTicking] = useState(false);
   const [seconds, setSeconds] = useState(1);
   const [bpm, setBpm] = useState(60);
   const [sound, setSound] = useState(null);
-  const [noteValue, setNoteValue] = useState("noire");
+  const [noteValue, setNoteValue] = useState(NOTE_VALUES[0]);
 
   useEffect(() => {
     if (isTicking) {
@@ -75,14 +88,16 @@ export default function App() {
         />
       </View>
       <View>
-        <Text style={styles.subtitle}>Figures de notes</Text>
+        <Text style={styles.subtitle}>Note Values</Text>
+        <Text style={styles.currentNoteValue}>Current note value is: {noteValue.name}</Text>
         <View style={styles.noteValuesContainer}>
-          <TouchableOpacity onPress={() => setNoteValue('noire')}>
-            <Image source={require('./assets/noire.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setNoteValue('croche')}>
-            <Image source={require('./assets/croche.png')} />
-          </TouchableOpacity>
+          {
+            NOTE_VALUES.map(noteValue => (
+              <TouchableOpacity key={noteValue.name} onPress={() => setNoteValue(noteValue)}>
+                <Image source={noteValue.image} />
+              </TouchableOpacity>
+            ))
+          }
         </View>
       </View>
       <StatusBar style="auto" />
@@ -106,7 +121,7 @@ const styles = StyleSheet.create({
   bpmContainer: {
     borderBottomColor: "#333",
     borderBottomWidth: 2,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   title: {
     color: "#333",
@@ -115,6 +130,11 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "#333",
     fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 8
+  },
+  currentNoteValue: {
+    marginBottom: 8
   },
   noteValuesContainer: {
     display: "flex",
