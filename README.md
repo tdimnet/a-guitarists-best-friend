@@ -2,9 +2,11 @@
 
 Open source metronome built with React Native.
 
-![Design preview for the a guitarist's best fried App](./assets/README-app-preview.png)
-
 **I know, the design is pretty rough at the moment**.
+
+<img src="./assets/README-app-preview.png" alt="Design preview for the a guitarist's best fried App" height="600" />
+
+---
 
 ## Prerequis
 
