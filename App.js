@@ -7,24 +7,13 @@ import {
   Button,
   TextInput,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Audio } from "expo-av";
 
-import handleTimer from './src/utils/timer'
+import { handleBpm, handleNoteValue as handleTimer } from "./src/utils/timer";
+import { NOTE_VALUES } from "./src/constants/noteValues";
 
-const NOTE_VALUES = [
-  {
-    value: 1,
-    image: require('./assets/noire.png'),
-    name: 'noire'
-  },
-  {
-    value: 0.5,
-    image: require('./assets/croche.png'),
-    name: 'croche'
-  },
-]
 
 export default function App() {
   const [isTicking, setIsTicking] = useState(false);
@@ -37,8 +26,16 @@ export default function App() {
     if (isTicking) {
       (async () => {
         let time = seconds === 4 ? 1 : seconds + 1;
+        
+        console.log("=====")
+        console.log(time)
+        console.log("=====")
+
         await playSound();
-        const timer = setTimeout(() => setSeconds(time), handleTimer(bpm));
+        const timer = setTimeout(
+          () => setSeconds(time),
+          handleTimer(handleBpm(bpm), noteValue.value)
+        );
         return () => clearTimeout(timer);
       })();
     }
@@ -67,11 +64,19 @@ export default function App() {
       <Text style={styles.title}>{seconds} / 4</Text>
       <Button onPress={() => playSound()} title="Play Sound" />
       <Button onPress={() => setIsTicking(true)} title="Start" />
-      <Button onPress={() => {
-        setSeconds(1)
-        setIsTicking(false)
-      }} title="Stop" />
-      <Button onPress={() => handleTimer()} title="Timer helper" />
+      <Button
+        onPress={() => {
+          setIsTicking(false);
+          setSeconds(1);
+        }}
+        title="Stop"
+      />
+      <Button
+        onPress={() =>
+          console.log(handleTimer(handleBpm(bpm), noteValue.value))
+        }
+        title="Timer helper"
+      />
       <View style={styles.bpmContainer}>
         <Text>Choose the number of BPM you want:</Text>
         <Text>This actual number of BPM is: {bpm} BPM</Text>
@@ -84,15 +89,18 @@ export default function App() {
       </View>
       <View>
         <Text style={styles.subtitle}>Note Values</Text>
-        <Text style={styles.currentNoteValue}>Current note value is: {noteValue.name}</Text>
+        <Text style={styles.currentNoteValue}>
+          Current note value is: {noteValue.name}
+        </Text>
         <View style={styles.noteValuesContainer}>
-          {
-            NOTE_VALUES.map(noteValue => (
-              <TouchableOpacity key={noteValue.name} onPress={() => setNoteValue(noteValue)}>
-                <Image source={noteValue.image} />
-              </TouchableOpacity>
-            ))
-          }
+          {NOTE_VALUES.map((noteValue) => (
+            <TouchableOpacity
+              key={noteValue.name}
+              onPress={() => setNoteValue(noteValue)}
+            >
+              <Image source={noteValue.image} />
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
       <StatusBar style="auto" />
@@ -125,11 +133,11 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "#333",
     fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 8
+    textAlign: "center",
+    marginBottom: 8,
   },
   currentNoteValue: {
-    marginBottom: 8
+    marginBottom: 8,
   },
   noteValuesContainer: {
     display: "flex",
