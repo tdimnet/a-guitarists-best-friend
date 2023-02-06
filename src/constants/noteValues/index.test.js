@@ -14,6 +14,11 @@ describe("NOTE_VALUES Snapshot Test Suites", () => {
           "name": "croche",
           "value": 0.5,
         },
+        Object {
+          "image": 1,
+          "name": "double croche",
+          "value": 0.25,
+        },
       ]
     `);
   });

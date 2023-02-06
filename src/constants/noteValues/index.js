@@ -9,4 +9,9 @@ export const NOTE_VALUES = [
     image: require("../../../assets/croche.png"),
     name: "croche",
   },
+  {
+    value: 0.25,
+    image: require("../../../assets/double-croche.png"),
+    name: "double croche",
+  },
 ];
