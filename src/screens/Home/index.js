@@ -11,11 +11,10 @@ import {
   Modal,
 } from "react-native";
 import { Audio } from "expo-av";
-import { Picker } from "@react-native-picker/picker";
 
 import { handleBpm, handleNoteValue as handleTimer } from "../../utils/timer";
 import { NOTE_VALUES } from "../../constants/noteValues";
-
+import BpmPicker from "../../components/BpmPicker";
 
 export default function Home() {
   const [isTicking, setIsTicking] = useState(false);
@@ -25,7 +24,6 @@ export default function Home() {
   const [noteValue, setNoteValue] = useState(NOTE_VALUES[0]);
 
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState();
 
   useEffect(() => {
     if (isTicking) {
@@ -67,22 +65,13 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Modal animationType="slide" transparent={false} visible={isVisible}>
-        <View>
-          <Text>Choose Language</Text>
-          <Picker
-            selectedValue={selectedLanguage}
-            onValueChange={(itemValue) => setSelectedLanguage(itemValue)}
-            style={{ width: 200 }}
-          >
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
-          </Picker>
-          <Button onPress={() => setIsVisible(false)} title="Hide Modal" />
-        </View>
+        <BpmPicker setBpm={setBpm} bpm={bpm} setIsVisible={setIsVisible} />
       </Modal>
 
       <Button onPress={() => setIsVisible(true)} title="Show Modal" />
-
+      <View style={styles.bpmContainer}>
+        <Text>{bpm} BPM</Text>
+      </View>
       <Text style={styles.title}>{seconds} / 4</Text>
       <Button onPress={() => playSound()} title="Play Sound" />
       <Button onPress={() => setIsTicking(true)} title="Start" />
@@ -99,16 +88,6 @@ export default function Home() {
         }
         title="Timer helper"
       />
-      <View style={styles.bpmContainer}>
-        <Text>Choose the number of BPM you want:</Text>
-        <Text>This actual number of BPM is: {bpm} BPM</Text>
-        <TextInput
-          style={styles.input}
-          value={bpm}
-          onChangeText={setBpm}
-          keyboardType="numeric"
-        />
-      </View>
       <View>
         <Text style={styles.subtitle}>Note Values</Text>
         <Text style={styles.currentNoteValue}>
