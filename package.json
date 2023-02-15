@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-picker/picker": "2.4.8",
     "expo": "~47.0.12",
     "expo-av": "~13.0.2",
     "expo-status-bar": "~1.4.2",

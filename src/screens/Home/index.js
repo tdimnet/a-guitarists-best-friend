@@ -8,11 +8,14 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { Audio } from "expo-av";
+import { Picker } from "@react-native-picker/picker";
 
 import { handleBpm, handleNoteValue as handleTimer } from "../../utils/timer";
 import { NOTE_VALUES } from "../../constants/noteValues";
+
 
 export default function Home() {
   const [isTicking, setIsTicking] = useState(false);
@@ -20,6 +23,9 @@ export default function Home() {
   const [bpm, setBpm] = useState(60);
   const [sound, setSound] = useState(null);
   const [noteValue, setNoteValue] = useState(NOTE_VALUES[0]);
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState();
 
   useEffect(() => {
     if (isTicking) {
@@ -60,6 +66,23 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
+      <Modal animationType="slide" transparent={false} visible={isVisible}>
+        <View>
+          <Text>Choose Language</Text>
+          <Picker
+            selectedValue={selectedLanguage}
+            onValueChange={(itemValue) => setSelectedLanguage(itemValue)}
+            style={{ width: 200 }}
+          >
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+          </Picker>
+          <Button onPress={() => setIsVisible(false)} title="Hide Modal" />
+        </View>
+      </Modal>
+
+      <Button onPress={() => setIsVisible(true)} title="Show Modal" />
+
       <Text style={styles.title}>{seconds} / 4</Text>
       <Button onPress={() => playSound()} title="Play Sound" />
       <Button onPress={() => setIsTicking(true)} title="Start" />
