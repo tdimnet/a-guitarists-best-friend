@@ -6,6 +6,5 @@ export default function Screen() {
     <View>
       <Text>Hello, Settings</Text>
     </View>
-  )
+  );
 }
-

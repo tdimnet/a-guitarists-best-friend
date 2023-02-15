@@ -62,6 +62,16 @@ export default function Home({ navigation }) {
     await sound.playAsync();
   }
 
+  function updateBpm(action) {
+    if (action === "increase") {
+      setBpm(bpm + 1);
+    } else if (action === "decrease") {
+      setBpm(bpm - 1);
+    } else {
+      throw new Error("Unknown action");
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Modal animationType="slide" transparent={false} visible={isVisible}>
@@ -69,7 +79,22 @@ export default function Home({ navigation }) {
       </Modal>
 
       <Button onPress={() => setIsVisible(true)} title="Show Modal" />
-      <Button onPress={() => navigation.navigate('Settings')} title="Settings" />
+      <View>
+        <Button
+          onPress={() => updateBpm("increase")}
+          disabled={bpm === 200}
+          title="Increase BPM"
+        />
+        <Button
+          onPress={() => updateBpm("decrease")}
+          disabled={bpm === 40}
+          title="Decrease BPM"
+        />
+      </View>
+      <Button
+        onPress={() => navigation.navigate("Settings")}
+        title="Settings"
+      />
       <View style={styles.bpmContainer}>
         <Text>{bpm} BPM</Text>
       </View>
