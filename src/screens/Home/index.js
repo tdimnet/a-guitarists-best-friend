@@ -16,7 +16,7 @@ import { handleBpm, handleNoteValue as handleTimer } from "../../utils/timer";
 import { NOTE_VALUES } from "../../constants/noteValues";
 import BpmPicker from "../../components/BpmPicker";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [isTicking, setIsTicking] = useState(false);
   const [seconds, setSeconds] = useState(1);
   const [bpm, setBpm] = useState(60);
@@ -69,6 +69,7 @@ export default function Home() {
       </Modal>
 
       <Button onPress={() => setIsVisible(true)} title="Show Modal" />
+      <Button onPress={() => navigation.navigate('Settings')} title="Settings" />
       <View style={styles.bpmContainer}>
         <Text>{bpm} BPM</Text>
       </View>
